@@ -28,7 +28,6 @@ namespace eSGarden_DownloadFirebase
         private async void Huertos_Load(object sender, EventArgs e)
         {
             listBoxGardens.Items.Clear();
-            //var firebase = FireBaseClient.GetFireBaseClient(Constantes.URL_TFM, Constantes.APP_SECRET_TFM);
             var jardines = await firebase
                                .Child("Gardens")
                                //.Child("Garden 1")
@@ -42,20 +41,6 @@ namespace eSGarden_DownloadFirebase
             {
                 listBoxGardens.Items.Add(jardin.Key);
             }
-
-            var asd = "asd";
-            //ActualizarBDLocal actualizar = new ActualizarBDLocal();
-            //bool resultado = actualizar.ActualizarBD();
-
-
-            //if (resultado)
-            //{
-            //    string hola = "hola";
-            //}
-            //else
-            //{
-            //    string adios = "adios";
-            //}
         }
 
         private async void listBoxGardens_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,64 +82,67 @@ namespace eSGarden_DownloadFirebase
             ws.Cell(1, 1).Value = "ID";
             ws.Cell(1, 2).Value = "ID Node";
             ws.Cell(1, 3).Value = "Insertado";
-            ws.Cell(1, 4).Value = "DATASLOT_0";
-            ws.Range(1, 4, 1, 7).Row(1).Merge();
-            ws.Cell(1, 8).Value = "Type";
-            ws.Cell(1, 9).Value = "DATASLOT_1";
-            ws.Range(1, 9, 1, 12).Row(1).Merge();
-            ws.Cell(1, 13).Value = "Type";
-            ws.Cell(1, 14).Value = "DATASLOT_2";
-            ws.Range(1, 14, 1, 17).Row(1).Merge();
-            ws.Cell(1, 18).Value = "Type";
-            ws.Cell(1, 19).Value = "DATASLOT_3";
-            ws.Range(1, 19, 1, 21).Row(1).Merge();
-            ws.Cell(1, 22).Value = "Type";
+            ws.Cell(1, 4).Value = "Type";
+            ws.Cell(1, 5).Value = "DATASLOT_0";
+            ws.Range(1, 5, 1, 8).Row(1).Merge();
+            ws.Cell(1, 9).Value = "Type";
+            ws.Cell(1, 10).Value = "DATASLOT_1";
+            ws.Range(1, 10, 1, 13).Row(1).Merge();
+            ws.Cell(1, 14).Value = "Type";
+            ws.Cell(1, 15).Value = "DATASLOT_2";
+            ws.Range(1, 15, 1, 18).Row(1).Merge();
+            ws.Cell(1, 19).Value = "Type";
+            ws.Cell(1, 20).Value = "DATASLOT_3";
+            ws.Range(1, 20, 1, 23).Row(1).Merge();
+            
             int indice = 2;
             foreach (var d in data)
             {
                 ws.Cell(indice, 1).Value = d.Key;
                 ws.Cell(indice, 2).Value = d.Object.ID_Node;
                 ws.Cell(indice, 3).Value = UnixDateTimeConverter.UnixTimeStampToDateTime(d.Object.timestamp, UnixDateTimeConverter.TypeConversion.Milliseconds);
-                var indiceDataslot_0 = 4;
+                ws.Cell(indice, 4).Value = d.Object.DATASLOT_0.Type;
+                var indiceDataslot_0 = 5;
                 foreach (var v in d.Object.DATASLOT_0.Value)
                 {
                     ws.Cell(indice, indiceDataslot_0).Value = v;
                     indiceDataslot_0++;
-                    if (indiceDataslot_0 >= 7)
+                    if (indiceDataslot_0 >= 8)
                         break;
 
                 }
-                ws.Cell(indice, 8).Value = d.Object.DATASLOT_0.Type;
-                var indiceDataslot_1 = 9;
+
+                ws.Cell(indice, 9).Value = d.Object.DATASLOT_1.Type;
+                var indiceDataslot_1 = 10;
                 foreach (var v in d.Object.DATASLOT_1.Value)
                 {
                     ws.Cell(indice, indiceDataslot_1).Value = v;
                     indiceDataslot_1++;
-                    if (indiceDataslot_1 >= 12)
+                    if (indiceDataslot_1 >= 13)
                         break;
 
                 }
-                ws.Cell(indice, 13).Value = d.Object.DATASLOT_1.Type;
-                var indiceDataslot_2 = 14;
+                ws.Cell(indice, 14).Value = d.Object.DATASLOT_2.Type;
+                var indiceDataslot_2 = 15;
                 foreach (var v in d.Object.DATASLOT_2.Value)
                 {
                     ws.Cell(indice, indiceDataslot_2).Value = v;
                     indiceDataslot_2++;
-                    if (indiceDataslot_2 >= 17)
+                    if (indiceDataslot_2 >= 18)
                         break;
 
                 }
-                ws.Cell(indice, 18).Value = d.Object.DATASLOT_2.Type;
-                var indiceDataslot_3 = 19;
+                ws.Cell(indice, 19).Value = d.Object.DATASLOT_3.Type;
+                var indiceDataslot_3 = 20;
                 foreach (var v in d.Object.DATASLOT_3.Value)
                 {
                     ws.Cell(indice, indiceDataslot_3).Value = v;
                     indiceDataslot_3++;
-                    if (indiceDataslot_3 >= 21)
+                    if (indiceDataslot_3 >= 23)
                         break;
 
                 }
-                ws.Cell(indice, 22).Value = d.Object.DATASLOT_3.Type;
+                
                 indice++;
             }
 
@@ -162,8 +150,6 @@ namespace eSGarden_DownloadFirebase
             wb.SaveAs(urlExcel);
 
             MessageBox.Show($"Excel generado correctamente {urlExcel}");
-
-            var asd = "Asd";
         }
     }
 }
