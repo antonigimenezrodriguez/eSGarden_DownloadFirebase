@@ -64,11 +64,16 @@ namespace eSGarden_DownloadFirebase
                .Child("Data")
                .OrderByKey()
                .OnceAsync<Data>();
-            
-            string urlExcel = "c:\\temp\\Data_Test.xlsx";
+           
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Archivo Excel files (*.xlsx)|*.xlsx";
+            saveFileDialog.FilterIndex = 2;
+            saveFileDialog.RestoreDirectory = true;
 
-            GeneracionExcel.GenerarExcel(urlExcel, data);
-
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                GeneracionExcel.GenerarExcel(saveFileDialog.FileName, data);
+            }
         }
     }
 }
