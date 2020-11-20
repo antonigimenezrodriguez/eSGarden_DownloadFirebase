@@ -1,82 +1,16 @@
 ﻿using ClosedXML.Excel;
-using ConexionBaseDatos;
 using Firebase.Database;
-using Firebase.Database.Query;
 using Models;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utils;
 
-namespace eSGarden_DownloadFirebase
+namespace eSGarden_DownloadFirebase.Utils
 {
-    public partial class eSGarden_DownloadFirebase : Form
+    public class GeneracionExcel
     {
-        public FirebaseClient firebase { get; set; }
-        public eSGarden_DownloadFirebase()
-        {
-            InitializeComponent();
-            firebase = FireBaseClient.GetFireBaseClient(Constantes.URL_TFM, Constantes.APP_SECRET_TFM);
-        }
-
-        private async void Huertos_Load(object sender, EventArgs e)
-        {
-            listBoxGardens.Items.Clear();
-            var jardines = await firebase
-                               .Child("Gardens")
-                               //.Child("Garden 1")
-                               //.Child("sensorData")
-                               //.Child("General")
-                               //.Child("Data")
-                               .OrderByKey()
-                               .OnceAsync<Garden>();
-
-            foreach (var jardin in jardines)
-            {
-                listBoxGardens.Items.Add(jardin.Key);
-            }
-        }
-
-        private async void listBoxGardens_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            listBoxCampos.Items.Clear();
-            var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-
-            var campos = await firebase
-                   .Child("Gardens")
-                   .Child(jardinSeleccionado)
-                   .Child("sensorData")
-                   .OrderByKey()
-                   .OnceAsync<sensorData>();
-            foreach (var campo in campos)
-            {
-                listBoxCampos.Items.Add(campo.Key);
-            }
-
-        }
-
-        private async void btnDescargarCSV_Click(object sender, EventArgs e)
-        {
-            string urlExcel = "c:\\temp\\Data_Test.xlsx";
-            var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-            var campoSeleccionado = listBoxCampos.SelectedItem.ToString();
-            var data = await firebase
-               .Child("Gardens")
-               .Child(jardinSeleccionado)
-               .Child("sensorData")
-               .Child(campoSeleccionado)
-               .Child("Data")
-               .OrderByKey()
-               .OnceAsync<Data>();
-
-
-
+        public static void GenerarExcel(string urlExcel, IReadOnlyCollection<FirebaseObject<Data>> data)
+        { 
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Data_Test_Worksheet");
             ws.Cell(1, 1).Value = "ID";
@@ -94,7 +28,7 @@ namespace eSGarden_DownloadFirebase
             ws.Cell(1, 19).Value = "Type";
             ws.Cell(1, 20).Value = "DATASLOT_3";
             ws.Range(1, 20, 1, 23).Row(1).Merge();
-            
+
             int indice = 2;
             foreach (var d in data)
             {
@@ -109,7 +43,6 @@ namespace eSGarden_DownloadFirebase
                     indiceDataslot_0++;
                     if (indiceDataslot_0 >= 8)
                         break;
-
                 }
 
                 ws.Cell(indice, 9).Value = d.Object.DATASLOT_1.Type;
@@ -142,7 +75,7 @@ namespace eSGarden_DownloadFirebase
                         break;
 
                 }
-                
+
                 indice++;
             }
 
