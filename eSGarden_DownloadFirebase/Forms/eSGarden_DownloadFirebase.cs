@@ -1,17 +1,9 @@
-﻿using ClosedXML.Excel;
-using ConexionBaseDatos;
+﻿using ConexionBaseDatos;
 using eSGarden_DownloadFirebase.Utils;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utils;
 
@@ -48,7 +40,6 @@ namespace eSGarden_DownloadFirebase
         {
             listBoxCampos.Items.Clear();
             var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-
             var campos = await firebase
                    .Child("Gardens")
                    .Child(jardinSeleccionado)
@@ -59,7 +50,6 @@ namespace eSGarden_DownloadFirebase
             {
                 listBoxCampos.Items.Add(campo.Key);
             }
-
         }
 
         private async void btnDescargarCSV_Click(object sender, EventArgs e)
