@@ -4,6 +4,7 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using Models;
 using System;
+using System.Configuration;
 using System.Windows.Forms;
 using Utils;
 
@@ -15,7 +16,10 @@ namespace eSGarden_DownloadFirebase
         public eSGarden_DownloadFirebase()
         {
             InitializeComponent();
-            firebase = FireBaseClient.GetFireBaseClient(Constantes.URL_TFM, Constantes.APP_SECRET_TFM);
+            firebase = FireBaseClient.GetFireBaseClient(
+                 ConfigurationManager.AppSettings.Get(Constantes.KEY_URL),
+                 ConfigurationManager.AppSettings.Get(Constantes.KEY_SECRET)
+             );
         }
 
         private async void Huertos_Load(object sender, EventArgs e)
@@ -64,7 +68,7 @@ namespace eSGarden_DownloadFirebase
                .Child("Data")
                .OrderByKey()
                .OnceAsync<Data>();
-           
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Archivo Excel files (*.xlsx)|*.xlsx";
             saveFileDialog.FilterIndex = 2;
