@@ -75,6 +75,9 @@
     <Compile Include="Utils\Constantes.cs" />
     <Compile Include="Utils\GeneracionExcel.cs" />
     <Compile Include="Utils\UnixDateTimeConverter.cs" />
+    <EmbeddedResource Include="Forms\eSGarden_DownloadFirebase.resx">
+      <DependentUpon>eSGarden_DownloadFirebase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

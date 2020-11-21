@@ -46,10 +46,12 @@
             // 
             // listBoxCampos
             // 
+            this.listBoxCampos.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxCampos.FormattingEnabled = true;
+            this.listBoxCampos.ItemHeight = 19;
             this.listBoxCampos.Location = new System.Drawing.Point(442, 62);
             this.listBoxCampos.Name = "listBoxCampos";
-            this.listBoxCampos.Size = new System.Drawing.Size(229, 316);
+            this.listBoxCampos.Size = new System.Drawing.Size(229, 308);
             this.listBoxCampos.TabIndex = 1;
             // 
             // btnDescargarCSV
@@ -62,7 +64,7 @@
             this.btnDescargarCSV.UseVisualStyleBackColor = true;
             this.btnDescargarCSV.Click += new System.EventHandler(this.btnDescargarCSV_Click);
             // 
-            // Huertos
+            // eSGarden_DownloadFirebase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -70,7 +72,7 @@
             this.Controls.Add(this.btnDescargarCSV);
             this.Controls.Add(this.listBoxCampos);
             this.Controls.Add(this.listBoxGardens);
-            this.Name = "Huertos";
+            this.Name = "eSGarden_DownloadFirebase";
             this.Text = "Huertos";
             this.Load += new System.EventHandler(this.Huertos_Load);
             this.ResumeLayout(false);
