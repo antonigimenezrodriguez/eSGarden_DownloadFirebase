@@ -7,12 +7,15 @@ using System;
 using System.Configuration;
 using System.Windows.Forms;
 using Utils;
+using System.Linq;
 
 namespace eSGarden_DownloadFirebase
 {
     public partial class eSGarden_DownloadFirebase : Form
     {
         public FirebaseClient Firebase { get; set; }
+        public string JardinSeleccionado { get; set; }
+        public string CampoSeleccionado { get; set; }
         public eSGarden_DownloadFirebase()
         {
             InitializeComponent();
@@ -20,6 +23,10 @@ namespace eSGarden_DownloadFirebase
                  ConfigurationManager.AppSettings.Get(Constantes.KEY_URL),
                  ConfigurationManager.AppSettings.Get(Constantes.KEY_SECRET)
              );
+            LB_Vegetable.Text = "";
+            LB_Name.Text = "";
+            label1.Text = "";
+            label2.Text = "";
         }
 
         private async void Huertos_Load(object sender, EventArgs e)
@@ -43,10 +50,10 @@ namespace eSGarden_DownloadFirebase
         private async void listBoxGardens_SelectedIndexChanged(object sender, EventArgs e)
         {
             listBoxCampos.Items.Clear();
-            var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
+            JardinSeleccionado = listBoxGardens.SelectedItem.ToString();
             var campos = await Firebase
                    .Child("Gardens")
-                   .Child(jardinSeleccionado)
+                   .Child(JardinSeleccionado)
                    .Child("sensorData")
                    .OrderByKey()
                    .OnceAsync<sensorData>();
@@ -58,13 +65,11 @@ namespace eSGarden_DownloadFirebase
 
         private async void btnDescargarCSV_Click(object sender, EventArgs e)
         {
-            var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-            var campoSeleccionado = listBoxCampos.SelectedItem.ToString();
             var data = await Firebase
                .Child("Gardens")
-               .Child(jardinSeleccionado)
+               .Child(JardinSeleccionado)
                .Child("sensorData")
-               .Child(campoSeleccionado)
+               .Child(CampoSeleccionado)
                .Child("Data")
                .OrderByKey()
                .OnceAsync<Data>();
@@ -79,6 +84,34 @@ namespace eSGarden_DownloadFirebase
                 Cursor.Current = Cursors.WaitCursor;
                 GeneracionExcel.GenerarExcel(saveFileDialog.FileName, data);
                 Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private async void listBoxCampos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CampoSeleccionado = listBoxCampos.SelectedItem.ToString();
+            var data = await Firebase
+               .Child("Gardens")
+               .Child(JardinSeleccionado)
+               .Child("sensorData")
+               //.Child(CampoSeleccionado)
+               .OrderByKey()
+               .OnceAsync<sensorData>();
+
+            if (CampoSeleccionado.ToLower().Contains("plot"))
+            {
+                var seleccionado = data.Where(w => w.Key == CampoSeleccionado).FirstOrDefault();
+                label1.Text = "Name: ";
+                label2.Text = "Vegetable: ";
+                LB_Name.Text = seleccionado.Object.Name;
+                LB_Vegetable.Text = seleccionado.Object.Vegetable;
+            }
+            else
+            {
+                LB_Name.Text = "";
+                LB_Vegetable.Text = "";
+                label1.Text = "";
+                label2.Text = "";
             }
         }
     }
