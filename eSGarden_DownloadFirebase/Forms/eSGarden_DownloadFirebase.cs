@@ -12,11 +12,11 @@ namespace eSGarden_DownloadFirebase
 {
     public partial class eSGarden_DownloadFirebase : Form
     {
-        public FirebaseClient firebase { get; set; }
+        public FirebaseClient Firebase { get; set; }
         public eSGarden_DownloadFirebase()
         {
             InitializeComponent();
-            firebase = FireBaseClient.GetFireBaseClient(
+            Firebase = FireBaseClient.GetFireBaseClient(
                  ConfigurationManager.AppSettings.Get(Constantes.KEY_URL),
                  ConfigurationManager.AppSettings.Get(Constantes.KEY_SECRET)
              );
@@ -25,7 +25,7 @@ namespace eSGarden_DownloadFirebase
         private async void Huertos_Load(object sender, EventArgs e)
         {
             listBoxGardens.Items.Clear();
-            var jardines = await firebase
+            var jardines = await Firebase
                                .Child("Gardens")
                                //.Child("Garden 1")
                                //.Child("sensorData")
@@ -44,7 +44,7 @@ namespace eSGarden_DownloadFirebase
         {
             listBoxCampos.Items.Clear();
             var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-            var campos = await firebase
+            var campos = await Firebase
                    .Child("Gardens")
                    .Child(jardinSeleccionado)
                    .Child("sensorData")
@@ -60,7 +60,7 @@ namespace eSGarden_DownloadFirebase
         {
             var jardinSeleccionado = listBoxGardens.SelectedItem.ToString();
             var campoSeleccionado = listBoxCampos.SelectedItem.ToString();
-            var data = await firebase
+            var data = await Firebase
                .Child("Gardens")
                .Child(jardinSeleccionado)
                .Child("sensorData")
@@ -76,7 +76,9 @@ namespace eSGarden_DownloadFirebase
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
+                Cursor.Current = Cursors.WaitCursor;
                 GeneracionExcel.GenerarExcel(saveFileDialog.FileName, data);
+                Cursor.Current = Cursors.Default;
             }
         }
     }
