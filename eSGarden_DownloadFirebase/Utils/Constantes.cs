@@ -22,7 +22,7 @@
         //public const string APP_SECRET_TFM = "dYonmi8RciAJ6Oag5nzzxiCas5KvfzPftQQoStKq";
         //public const string URL_TFM = "https://os-smartno.firebaseio.com/";
 
-        //Os-smartno
+        //esgarden 4th psp
         //public const string APP_SECRET_TFM = "bJOt7Z8hM4VCqnIzRip9Ait578hd39bJ87IQFMJJ";
         //public const string URL_TFM = "https://esgarden-4th-psp.firebaseio.com/";
     }
