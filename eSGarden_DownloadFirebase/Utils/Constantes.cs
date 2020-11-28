@@ -13,5 +13,17 @@
 
         //public const string APP_SECRET_TFM = "pZdJMkPR7c7dgauq4W2I955dXA4Q8ryhEIdXD4TH";
         //public const string URL_TFM = "https://esgarden-antoni.firebaseio.com/";
+
+        //Purísima
+        //public const string APP_SECRET_TFM = "yhJeSPCwkqUA8YsGanWpvmm0GseaqU9JE5GUZG0J";
+        //public const string URL_TFM = "https://esgarden-pruebas.firebaseio.com/";
+
+        //Os-smartno
+        //public const string APP_SECRET_TFM = "dYonmi8RciAJ6Oag5nzzxiCas5KvfzPftQQoStKq";
+        //public const string URL_TFM = "https://os-smartno.firebaseio.com/";
+
+        //Os-smartno
+        //public const string APP_SECRET_TFM = "bJOt7Z8hM4VCqnIzRip9Ait578hd39bJ87IQFMJJ";
+        //public const string URL_TFM = "https://esgarden-4th-psp.firebaseio.com/";
     }
 }
