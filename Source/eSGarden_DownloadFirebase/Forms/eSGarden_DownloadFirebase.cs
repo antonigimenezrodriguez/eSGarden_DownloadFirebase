@@ -65,25 +65,32 @@ namespace eSGarden_DownloadFirebase
 
         private async void btnDescargarCSV_Click(object sender, EventArgs e)
         {
-            var data = await Firebase
-               .Child("Gardens")
-               .Child(JardinSeleccionado)
-               .Child("sensorData")
-               .Child(CampoSeleccionado)
-               .Child("Data")
-               .OrderByKey()
-               .OnceAsync<Data>();
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Archivo Excel files (*.xlsx)|*.xlsx";
-            saveFileDialog.FilterIndex = 2;
-            saveFileDialog.RestoreDirectory = true;
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (JardinSeleccionado != null && CampoSeleccionado != null)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                GeneracionExcel.GenerarExcel(saveFileDialog.FileName, data);
-                Cursor.Current = Cursors.Default;
+                var data = await Firebase
+                   .Child("Gardens")
+                   .Child(JardinSeleccionado)
+                   .Child("sensorData")
+                   .Child(CampoSeleccionado)
+                   .Child("Data")
+                   .OrderByKey()
+                   .OnceAsync<Data>();
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Archivo Excel files (*.xlsx)|*.xlsx";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    GeneracionExcel.GenerarExcel(saveFileDialog.FileName, data);
+                    Cursor.Current = Cursors.Default;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please, select garden and plot", "Selection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
