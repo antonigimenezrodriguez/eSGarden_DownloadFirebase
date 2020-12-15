@@ -10,7 +10,7 @@ namespace eSGarden_DownloadFirebase.Utils
     public class GeneracionExcel
     {
         public static void GenerarExcel(string urlExcel, IReadOnlyCollection<FirebaseObject<Data>> data)
-        { 
+        {
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Data_Test_Worksheet");
             ws.Cell(1, 1).Value = "ID";
@@ -35,45 +35,57 @@ namespace eSGarden_DownloadFirebase.Utils
                 ws.Cell(indice, 1).Value = d.Key;
                 ws.Cell(indice, 2).Value = d.Object.ID_Node;
                 ws.Cell(indice, 3).Value = UnixDateTimeConverter.UnixTimeStampToDateTime(d.Object.timestamp, UnixDateTimeConverter.TypeConversion.Milliseconds);
-                ws.Cell(indice, 4).Value = d.Object.DATASLOT_0.Type;
+                ws.Cell(indice, 4).Value = d.Object.DATASLOT_0?.Type;
                 var indiceDataslot_0 = 5;
-                foreach (var v in d.Object.DATASLOT_0.Value)
+                if (d.Object.DATASLOT_0 != null)
                 {
-                    ws.Cell(indice, indiceDataslot_0).Value = v;
-                    indiceDataslot_0++;
-                    if (indiceDataslot_0 >= 8)
-                        break;
+                    foreach (var v in d.Object.DATASLOT_0?.Value)
+                    {
+                        ws.Cell(indice, indiceDataslot_0).Value = v;
+                        indiceDataslot_0++;
+                        if (indiceDataslot_0 >= 8)
+                            break;
+                    }
                 }
 
-                ws.Cell(indice, 9).Value = d.Object.DATASLOT_1.Type;
+                ws.Cell(indice, 9).Value = d.Object.DATASLOT_1?.Type;
                 var indiceDataslot_1 = 10;
-                foreach (var v in d.Object.DATASLOT_1.Value)
+                if (d.Object.DATASLOT_1 != null)
                 {
-                    ws.Cell(indice, indiceDataslot_1).Value = v;
-                    indiceDataslot_1++;
-                    if (indiceDataslot_1 >= 13)
-                        break;
+                    foreach (var v in d.Object.DATASLOT_1?.Value)
+                    {
+                        ws.Cell(indice, indiceDataslot_1).Value = v;
+                        indiceDataslot_1++;
+                        if (indiceDataslot_1 >= 13)
+                            break;
 
+                    }
                 }
-                ws.Cell(indice, 14).Value = d.Object.DATASLOT_2.Type;
+                ws.Cell(indice, 14).Value = d.Object.DATASLOT_2?.Type;
                 var indiceDataslot_2 = 15;
-                foreach (var v in d.Object.DATASLOT_2.Value)
+                if (d.Object.DATASLOT_2 != null)
                 {
-                    ws.Cell(indice, indiceDataslot_2).Value = v;
-                    indiceDataslot_2++;
-                    if (indiceDataslot_2 >= 18)
-                        break;
+                    foreach (var v in d.Object.DATASLOT_2?.Value)
+                    {
+                        ws.Cell(indice, indiceDataslot_2).Value = v;
+                        indiceDataslot_2++;
+                        if (indiceDataslot_2 >= 18)
+                            break;
 
+                    }
                 }
-                ws.Cell(indice, 19).Value = d.Object.DATASLOT_3.Type;
+                ws.Cell(indice, 19).Value = d.Object.DATASLOT_3?.Type;
                 var indiceDataslot_3 = 20;
-                foreach (var v in d.Object.DATASLOT_3.Value)
+                if (d.Object.DATASLOT_3 != null)
                 {
-                    ws.Cell(indice, indiceDataslot_3).Value = v;
-                    indiceDataslot_3++;
-                    if (indiceDataslot_3 >= 23)
-                        break;
+                    foreach (var v in d.Object.DATASLOT_3?.Value)
+                    {
+                        ws.Cell(indice, indiceDataslot_3).Value = v;
+                        indiceDataslot_3++;
+                        if (indiceDataslot_3 >= 23)
+                            break;
 
+                    }
                 }
 
                 indice++;
