@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConexionBaseDatos\FireBaseClient.cs" />
+    <Compile Include="ConexionBaseDatos\Repository\IFirebaseRepository.cs" />
     <Compile Include="Forms\eSGarden_DownloadFirebase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +89,7 @@
     <Compile Include="Models\Vegetable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConexionBaseDatos\Repository\FirebaseRepository.cs" />
     <Compile Include="Utils\Constantes.cs" />
     <Compile Include="Utils\GeneracionExcel.cs" />
     <Compile Include="Utils\UnixDateTimeConverter.cs" />

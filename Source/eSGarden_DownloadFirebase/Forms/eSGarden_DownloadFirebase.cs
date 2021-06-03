@@ -8,21 +8,22 @@ using System.Configuration;
 using System.Windows.Forms;
 using Utils;
 using System.Linq;
+using eSGarden_DownloadFirebase.ConexionBaseDatos.Repository;
+using eSGarden_DownloadFirebase.Repository;
 
 namespace eSGarden_DownloadFirebase
 {
     public partial class eSGarden_DownloadFirebase : Form
     {
-        public FirebaseClient Firebase { get; set; }
+
         public string JardinSeleccionado { get; set; }
         public string CampoSeleccionado { get; set; }
+        public FirebaseClient Firebase { get; set; }
+        public IFirebaseRepository FirebaseRepository { get; set; }
         public eSGarden_DownloadFirebase()
         {
             InitializeComponent();
-            Firebase = FireBaseClient.GetFireBaseClient(
-                 ConfigurationManager.AppSettings.Get(Constantes.KEY_URL),
-                 ConfigurationManager.AppSettings.Get(Constantes.KEY_SECRET)
-             );
+            FirebaseRepository = new FirebaseRepository();
             LB_Vegetable.Text = "";
             LB_Name.Text = "";
             label1.Text = "";
@@ -32,14 +33,8 @@ namespace eSGarden_DownloadFirebase
         private async void Huertos_Load(object sender, EventArgs e)
         {
             listBoxGardens.Items.Clear();
-            var jardines = await Firebase
-                               .Child("Gardens")
-                               //.Child("Garden 1")
-                               //.Child("sensorData")
-                               //.Child("General")
-                               //.Child("Data")
-                               .OrderByKey()
-                               .OnceAsync<Garden>();
+
+            var jardines = await FirebaseRepository.GetGardens();
 
             foreach (var jardin in jardines)
             {
@@ -51,12 +46,9 @@ namespace eSGarden_DownloadFirebase
         {
             listBoxCampos.Items.Clear();
             JardinSeleccionado = listBoxGardens.SelectedItem.ToString();
-            var campos = await Firebase
-                   .Child("Gardens")
-                   .Child(JardinSeleccionado)
-                   .Child("sensorData")
-                   .OrderByKey()
-                   .OnceAsync<sensorData>();
+
+            var campos = await FirebaseRepository.GetCampos(JardinSeleccionado);
+
             foreach (var campo in campos)
             {
                 listBoxCampos.Items.Add(campo.Key);
@@ -67,14 +59,10 @@ namespace eSGarden_DownloadFirebase
         {
             if (JardinSeleccionado != null && CampoSeleccionado != null)
             {
-                var data = await Firebase
-                   .Child("Gardens")
-                   .Child(JardinSeleccionado)
-                   .Child("sensorData")
-                   .Child(CampoSeleccionado)
-                   .Child("Data")
-                   .OrderByKey()
-                   .OnceAsync<Data>();
+
+                var data = await FirebaseRepository.GetData(JardinSeleccionado, CampoSeleccionado);
+
+               
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Archivo Excel files (*.xlsx)|*.xlsx";
@@ -97,13 +85,7 @@ namespace eSGarden_DownloadFirebase
         private async void listBoxCampos_SelectedIndexChanged(object sender, EventArgs e)
         {
             CampoSeleccionado = listBoxCampos.SelectedItem.ToString();
-            var data = await Firebase
-               .Child("Gardens")
-               .Child(JardinSeleccionado)
-               .Child("sensorData")
-               //.Child(CampoSeleccionado)
-               .OrderByKey()
-               .OnceAsync<sensorData>();
+            var data = await FirebaseRepository.GetCampos(JardinSeleccionado);
 
             if (CampoSeleccionado.ToLower().Contains("plot"))
             {
